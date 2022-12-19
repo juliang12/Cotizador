@@ -13,12 +13,12 @@ const INITIAL_STATE = {
   metros: "20",
 };
 
-const localData = JSON.parse(localStorage.getItem("historial"));
+let history = JSON.parse(localStorage.getItem("history")) || [];
 
 const Form = () => {
   const [data, setData] = useState([]);
   const [precio, setPrecio] = useState(0);
-  const [historial, setHistorial] = useState(localData || []);
+  const [historial, setHistorial] = useState(history);
   const [hidde, setHidde] = useState(false);
 
   const { values, error, handleChange, handleSubmit } = useForm(
@@ -33,6 +33,10 @@ const Form = () => {
     setPrecio(cotizador(metros, tipo, ubicacion));
     setHidde(true);
   }
+
+  useEffect(() => {
+    localStorage.setItem("history", JSON.stringify(historial));
+  }, [historial]);
 
   useEffect(() => {
     const result = async () => {
@@ -51,14 +55,19 @@ const Form = () => {
       precio: precio,
       fecha: Date.now(),
     };
-    setHistorial([...historial, newData]);
 
-    Swal.fire("Agregado al historial con exito!");
+    setHistorial((prev) => [...prev, newData]);
+
+    Swal.fire({
+      title: "Agregado al historial exitosamente!",
+      confirmButtonText: "Save",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
+    });
   };
-
-  useEffect(() => {
-    localStorage.setItem("historial", JSON.stringify(historial));
-  }, [values, historial]);
 
   return (
     <form
@@ -94,6 +103,7 @@ const Form = () => {
           aria-label="Default select example"
           name="ubicacion"
           value={ubicacion}
+          defaultChecked=""
           onChange={handleChange}
         >
           {filter.map((option) => (
@@ -120,6 +130,7 @@ const Form = () => {
           onChange={handleChange}
         />
       </div>
+      {error.metros && <p className="alert alert-danger">{error.metros}</p>}
       <button className="btn btn-outline-primary px-4 py-2">Cotizar</button>
 
       <h1 className="d-inline-block text-uppercase text-nowrap mt-5 text-primary">

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const HistoryTableRow = () => {
   const [history, setHistory] = useState(
-    JSON.parse(localStorage.getItem("historial"))
+    JSON.parse(localStorage.getItem("history"))
   );
 
   return (

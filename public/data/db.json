@@ -1,6 +1,11 @@
 [
   {
     "categoria": "propiedad",
+    "tipo": "--",
+    "factor": ""
+  },
+  {
+    "categoria": "propiedad",
     "tipo": "Casa",
     "factor": 1.09
   },
@@ -33,6 +38,11 @@
     "categoria": "propiedad",
     "tipo": "Depósito Logística",
     "factor": 1.92
+  },
+  {
+    "categoria": "ubicacion",
+    "tipo": "--",
+    "factor": ""
   },
   {
     "categoria": "ubicacion",
